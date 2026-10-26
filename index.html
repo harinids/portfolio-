@@ -114,7 +114,7 @@
       position: relative;
       overflow: hidden;
     }
-    .hero-inner { display: grid; grid-template-columns: 1fr auto; gap: 4rem; align-items: center; width: 100%; }
+    .hero-inner { display: grid; grid-template-columns: 1fr 160px; gap: 3rem; align-items: center; width: 100%; }
 
     .hero-meta {
       font-family: 'Space Mono', monospace;
@@ -162,7 +162,15 @@
     .hero-link.secondary:hover { background: var(--line); color: var(--ink); }
 
     /* ─── STAMP ──────────────────────────────────────────── */
-    .stamp-wrap { flex-shrink: 0; position: relative; width: var(--stamp-size); height: var(--stamp-size); }
+    .stamp-wrap {
+      flex-shrink: 0;
+      position: relative;
+      z-index: 0;
+      width: var(--stamp-size);
+      height: var(--stamp-size);
+      align-self: center;
+      justify-self: end;
+    }
     .stamp-svg { width: 100%; height: 100%; transform: rotate(-8deg); opacity: 0.9; }
 
     /* ─── DRIFT CHART ────────────────────────────────────── */
@@ -432,17 +440,17 @@
         <div class="hero-meta">
           <span>Bengaluru, Karnataka</span>
           <span>MSc Data Science · Batch 2025–27</span>
-          <span>CGPA 8.5 / 10</span>
+          <span>CGPA 3.79 / 4.0</span>
         </div>
 
         <h1 class="display">Harini B</h1>
 
-        <p class="hero-positioning">I build systems that know what to forget — and prove it.</p>
+        <p class="hero-positioning">I build ML systems that stay reliable when the data changes, and I measure whether they do.</p>
 
         <p class="hero-tagline">
-          Machine unlearning researcher with three near-publication papers on
-          adaptive forgetting, concept drift, and federated privacy compliance.
-          Targeting MLE, Research Scientist, and PhD roles.
+          Reliable machine learning under distribution shift: drift detection, continual learning,
+          unlearning and evaluation. Three manuscripts, one under review at IEEE TETCI, plus applied
+          systems in healthcare, geospatial AI and e-commerce.
         </p>
 
         <div class="hero-links">
@@ -463,15 +471,16 @@
         <svg class="stamp-svg" viewBox="0 0 140 140" xmlns="http://www.w3.org/2000/svg">
           <circle cx="70" cy="70" r="60" fill="none" stroke="#6E2A35" stroke-width="2"/>
           <circle cx="70" cy="70" r="54" fill="none" stroke="#6E2A35" stroke-width="0.5"/>
-          <path id="stamp-arc" d="M 18,70 A 52,52 0 1 1 122,70" fill="none"/>
-          <text font-family="Space Mono, monospace" font-size="8" letter-spacing="3.5" fill="#6E2A35" text-anchor="middle">
-            <textPath href="#stamp-arc" startOffset="50%">VERIFIED · UNLEARNED · 2026</textPath>
+          <!-- Full circle path for ring text -->
+          <path id="stamp-ring" d="M 70,14 A 56,56 0 1 1 69.99,14" fill="none"/>
+          <text font-family="Space Mono, monospace" font-size="7.2" letter-spacing="5.5" fill="#6E2A35" text-anchor="middle">
+            <textPath href="#stamp-ring" startOffset="50%">DETECT · ADAPT · FORGET · VERIFY ·</textPath>
           </text>
-          <text x="70" y="66" font-family="Space Mono, monospace" font-size="8.5" fill="#6E2A35" text-anchor="middle" letter-spacing="1">MACHINE</text>
-          <text x="70" y="78" font-family="Space Mono, monospace" font-size="8.5" fill="#6E2A35" text-anchor="middle" letter-spacing="1">UNLEARNING</text>
-          <text x="70" y="90" font-family="Space Mono, monospace" font-size="7" fill="#6E2A35" text-anchor="middle" opacity="0.7">LAB</text>
-          <line x1="40" y1="56" x2="100" y2="56" stroke="#6E2A35" stroke-width="0.5" opacity="0.5"/>
-          <line x1="40" y1="94" x2="100" y2="94" stroke="#6E2A35" stroke-width="0.5" opacity="0.5"/>
+          <line x1="38" y1="58" x2="102" y2="58" stroke="#6E2A35" stroke-width="0.5" opacity="0.5"/>
+          <line x1="38" y1="90" x2="102" y2="90" stroke="#6E2A35" stroke-width="0.5" opacity="0.5"/>
+          <text x="70" y="70" font-family="Space Mono, monospace" font-size="8.5" fill="#6E2A35" text-anchor="middle" letter-spacing="1.5">HARINI B</text>
+          <text x="70" y="81" font-family="Space Mono, monospace" font-size="6.2" fill="#6E2A35" text-anchor="middle" letter-spacing="0.8" opacity="0.85">RESEARCH DOSSIER</text>
+          <text x="70" y="92" font-family="Space Mono, monospace" font-size="7.5" fill="#6E2A35" text-anchor="middle" letter-spacing="1" opacity="0.7">2026</text>
         </svg>
       </div>
     </div>
@@ -490,25 +499,31 @@
     <div class="about-grid reveal">
       <div class="about-text">
         <p>
-          I'm an MSc Data Science candidate at CHRIST (Deemed to be University), Bengaluru,
-          with a research focus on <strong>machine unlearning</strong>, <strong>concept drift detection</strong>,
-          and <strong>federated learning</strong>. My work sits at the intersection of responsible AI
-          and systems engineering — designing models that don't just learn well, but can also
-          <em>forget</em> selectively, verifiably, and without full retraining.
+          A model remembers what the database forgot. Erase a record from storage and the model still
+          acts on it, because what it learned from that record lives in its weights. That gap is the
+          question I work on: how do you make a model forget specifically what it shouldn't have
+          learned, and how do you check that it did?
         </p>
         <p>
-          Before data science, I studied <strong>BSc Chemistry</strong> at Stella Maris College,
-          Chennai — which gave me a precision-driven, experimental mindset I carry into every
-          research pipeline I build. I document experiments like a lab notebook, not a slide deck.
+          My first project, <strong>DAMU</strong>, asked what happens when the data itself shifts.
+          It detects drift in a hate-speech stream and deactivates only the affected parts of the
+          model, without retraining. It caught every drift event with no false alarms on a 38K-sample
+          benchmark, and it is under review at <strong>IEEE TETCI</strong>. I then took the idea to
+          federated settings, where drift-segmented checkpointing lets a system erase one time window
+          while keeping what it learned afterward. In LLMs, I'm studying continual unlearning with
+          LoRA and EWC. There, a model reported successful forgetting while its perplexity had quietly
+          risen from 16 to over 1,300, a failure that standard checks missed.
         </p>
         <p>
-          Currently working as a <strong>GeoAI Research Intern at Deepspatial</strong>, building
-          agricultural intelligence systems that process satellite imagery at scale. Three research
-          papers under review or in preparation — all first-author, all quantitatively validated.
+          That experience shaped how I work. I treat <strong>evaluation as part of the research</strong>:
+          I switched my membership-inference test from loss to confidence because loss could be gamed,
+          and I report results across seeds rather than one lucky run.
         </p>
         <p>
-          I'm looking for <strong>MLE, Research Scientist, or PhD opportunities</strong> at top-tier
-          product companies and research groups who care about responsible, adaptive AI.
+          I also build systems people use. <strong>Nurture</strong> turns blood pressure, haemoglobin
+          and sugar readings into a single triage flag for ASHA health workers, and at Deepspatial I
+          built the ontology behind a GeoAI system that matches farm-level gaps to government schemes.
+          I'm drawn to problems where a model has to adapt without losing what it already knows.
         </p>
       </div>
       <div class="about-sidebar">
@@ -522,7 +537,7 @@
         </div>
         <div class="field-row">
           <span class="field-key">CGPA</span>
-          <span class="field-val">8.5 / 10.0</span>
+          <span class="field-val">3.79 / 4.0</span>
         </div>
         <div class="field-row">
           <span class="field-key">Prior Degree</span>
@@ -577,15 +592,16 @@
       <div class="paper-venue">Manuscript in preparation · 2026</div>
       <div class="paper-title">FDAM-UL: Federated Drift-Aware Machine Unlearning</div>
       <p class="paper-problem">
-        <strong>Problem:</strong> Satisfying GDPR Art. 17 ("right to erasure") in federated settings is difficult without exposing client data — central unlearning approaches break the federated privacy guarantee.
+        <strong>Problem:</strong> Erasing specific data from a federated model is hard when client data distributions drift over time — existing methods cannot separate pre-drift from post-drift knowledge without exposing client data.
       </p>
       <p class="paper-method">
-        <strong>Method:</strong> A fully decentralized federated framework integrating ADWIN + KS-test drift detection with EWC-regularized gradient ascent and influence-function-based unlearning. No raw client data leaves the device.
+        <strong>Method:</strong> A federated framework (FedProx) combining ADWIN + KS-test drift detection, drift-segmented checkpointing, and EWC-regularized gradient ascent. No raw client data leaves the device.
       </p>
       <div class="paper-metrics">
-        <span class="metric-chip highlight">ε-forgetting bound ε ≤ 0.05 (closed-form)</span>
-        <span class="metric-chip">MIA resistance ≤ 0.55</span>
-        <span class="metric-chip">GDPR Art. 17 compliance target</span>
+        <span class="metric-chip highlight">Forgetting score 1.000 (5 seeds, 2 datasets)</span>
+        <span class="metric-chip">CICIDS2017 + UNSW-NB15</span>
+        <span class="metric-chip">GDPR Art. 17-motivated</span>
+        <span class="metric-chip">FedProx aggregation</span>
       </div>
     </div>
 
@@ -658,10 +674,10 @@
       <div class="specimen-card reveal">
         <div class="specimen-no">Specimen No. 04</div>
         <div class="specimen-title">AGRI-GSIS</div>
-        <div class="specimen-date">Apr 2026 – Present</div>
-        <p class="specimen-desc">GeoAI agricultural intelligence platform. Processed 78M satellite pixels for NDVI analysis. 99.8% crop classification accuracy; 0.0217 MAE yield prediction. Integrates satellite, weather, and spatial data.</p>
+        <div class="specimen-date">Apr 2026 – Present · Xploor Research Program, Deepspatial</div>
+        <p class="specimen-desc">GeoAI framework matching agricultural gaps to government schemes at block level. Ontology of 16 gap types linked to 14 central and Meghalaya schemes, served via an 8-endpoint REST API with 38 automated tests. Applied to seven West Garo Hills blocks, with 85.7% gap classification accuracy.</p>
         <div class="specimen-stack">
-          <span class="stack-tag">XGBoost</span><span class="stack-tag">LSTM</span><span class="stack-tag">DBSCAN</span><span class="stack-tag">GeoAI</span>
+          <span class="stack-tag">Python</span><span class="stack-tag">Random Forest</span><span class="stack-tag">Flask REST API</span><span class="stack-tag">Google Earth Engine</span><span class="stack-tag">GeoAI</span>
         </div>
         <a href="https://github.com/harinids" target="_blank" class="specimen-link">View on GitHub ↗</a>
       </div>
@@ -705,13 +721,14 @@
 
       <div class="log-entry">
         <div class="log-date">Apr 2026 – Present</div>
-        <div class="log-role">GeoAI Research Intern</div>
-        <div class="log-org">Deepspatial · Noida</div>
+        <div class="log-role">Research Intern — Xploor Program</div>
+        <div class="log-org">Deepspatial · Noida &nbsp;·&nbsp; <em>eXperiential Program for Location &amp; Outcome ORiented Research</em></div>
         <ul class="log-bullets">
-          <li>Built <strong>AGRI-GSIS</strong>, integrating satellite, weather, and spatial data for agricultural intelligence.</li>
-          <li>Developed ML pipelines (XGBoost, LSTM, DBSCAN) for crop monitoring, yield prediction, and agricultural gap detection.</li>
-          <li>Processed <strong>78 million satellite pixels</strong> for NDVI analysis.</li>
-          <li>Achieved <strong>99.8% crop classification accuracy</strong> and <strong>0.0217 MAE</strong> for yield prediction.</li>
+          <li>Designed and developed the <strong>Gap-Scheme Ontology</strong>, the core of AGRI-GSIS — a GeoAI decision-support framework matching agricultural gaps to eligible government schemes at block level.</li>
+          <li>Built a three-tier ontology of <strong>16 gap types</strong> linked to <strong>14 central and Meghalaya state schemes</strong> (PM-KISAN, PMKSY, PMFBY, SMAM and others) through 17 weighted edges.</li>
+          <li>Developed a hybrid eligibility scoring engine combining ontology relevance with TF-IDF text similarity and hard statutory eligibility gating.</li>
+          <li>Deployed the recommendation engine as a <strong>REST API with 8 endpoints</strong>, validated by 38 automated tests; applied to seven blocks of West Garo Hills, Meghalaya.</li>
+          <li>Supporting analytics: Sentinel-2 NDVI/NDWI in Google Earth Engine, <strong>Random Forest gap classification (85.7% accuracy)</strong> with SHAP explainability, ARIMA vegetation forecasting.</li>
         </ul>
       </div>
 
@@ -720,9 +737,11 @@
         <div class="log-role">Research Intern — Machine Learning &amp; AI Systems</div>
         <div class="log-org">Techno International New Town · Kolkata</div>
         <ul class="log-bullets">
-          <li>Developed <strong>DAMU</strong>, integrating ADWIN-based drift detection with SISA unlearning into a single automated pipeline.</li>
-          <li>Built automated pipelines for concept drift detection and ML unlearning using Python and PyTorch.</li>
-          <li>Achieved <strong>100% drift detection accuracy with zero false positives</strong>; verified unlearning across three ML domains.</li>
+          <li>Developed <strong>DAMU</strong>, a pipeline that couples ADWIN drift detection with SISA unlearning so the drift signal automatically becomes the forget set, with no manual specification or full retraining.</li>
+          <li>Built the pipeline in Python and PyTorch, with shards aligned to ten temporal windows so drifted data can be removed by deactivating whole shards.</li>
+          <li>Evaluated on a <strong>38,000-sample hate speech corpus</strong> (Davidson and OLID) with harmful content shifting from 40% to 85%. Achieved <strong>100% drift detection with zero false positives</strong>.</li>
+          <li>Passed all four unlearning verification criteria: forget-set accuracy down 13.4 points (80.1% to 66.7%), retain-set accuracy up 6.5 points (69.7% to 76.2%), forget loss up from 0.416 to 0.637, retain loss down from 0.600 to 0.505.</li>
+          <li>Unlearning cost was zero retraining, since 5 of 10 shards were deactivated outright. Manuscript under review at <strong>IEEE TETCI</strong>.</li>
         </ul>
       </div>
 
@@ -742,44 +761,72 @@
     <div class="skills-grid reveal">
 
       <div>
-        <div class="skill-group-label">ML / Deep Learning</div>
+        <div class="skill-group-label">ML &amp; Deep Learning</div>
         <div class="skill-pills">
           <span class="skill-pill">PyTorch</span>
-          <span class="skill-pill">Hugging Face</span>
           <span class="skill-pill">Scikit-learn</span>
           <span class="skill-pill">XGBoost</span>
           <span class="skill-pill">Random Forest</span>
+          <span class="skill-pill">LSTM</span>
+          <span class="skill-pill">Hugging Face Transformers</span>
+          <span class="skill-pill">LoRA Fine-Tuning</span>
           <span class="skill-pill">NLP</span>
           <span class="skill-pill">LLM Applications</span>
-          <span class="skill-pill">Deep Learning</span>
         </div>
       </div>
 
       <div>
-        <div class="skill-group-label">Research Methods</div>
+        <div class="skill-group-label">ML Engineering</div>
+        <div class="skill-pills">
+          <span class="skill-pill">Feature Engineering</span>
+          <span class="skill-pill">Model Evaluation</span>
+          <span class="skill-pill">Hyperparameter Tuning</span>
+          <span class="skill-pill">Model Deployment</span>
+          <span class="skill-pill">REST API Development (Flask)</span>
+          <span class="skill-pill">Git</span>
+        </div>
+      </div>
+
+      <div>
+        <div class="skill-group-label">Programming &amp; Data</div>
+        <div class="skill-pills">
+          <span class="skill-pill">Python</span>
+          <span class="skill-pill">SQL</span>
+          <span class="skill-pill">MySQL</span>
+          <span class="skill-pill">Pandas</span>
+          <span class="skill-pill">NumPy</span>
+          <span class="skill-pill">Data Structures &amp; Algorithms</span>
+        </div>
+      </div>
+
+      <div>
+        <div class="skill-group-label">Statistics &amp; Math</div>
+        <div class="skill-pills">
+          <span class="skill-pill">Statistical Analysis</span>
+          <span class="skill-pill">Hypothesis Testing (KS-test)</span>
+          <span class="skill-pill">Probability</span>
+          <span class="skill-pill">Time Series Analysis</span>
+        </div>
+      </div>
+
+      <div>
+        <div class="skill-group-label">Research Areas</div>
         <div class="skill-pills">
           <span class="skill-pill">Machine Unlearning</span>
           <span class="skill-pill">Continual Learning</span>
-          <span class="skill-pill">Concept Drift Detection</span>
           <span class="skill-pill">Federated Learning</span>
-          <span class="skill-pill">Responsible AI</span>
-          <span class="skill-pill">Experimental Design</span>
+          <span class="skill-pill">Concept Drift Detection</span>
           <span class="skill-pill">GeoAI</span>
         </div>
       </div>
 
       <div>
-        <div class="skill-group-label">Tools &amp; Languages</div>
+        <div class="skill-group-label">Cloud &amp; Tools</div>
         <div class="skill-pills">
-          <span class="skill-pill">Python</span>
-          <span class="skill-pill">SQL</span>
-          <span class="skill-pill">Java</span>
-          <span class="skill-pill">Flask</span>
-          <span class="skill-pill">Streamlit</span>
-          <span class="skill-pill">Pandas</span>
-          <span class="skill-pill">NumPy</span>
-          <span class="skill-pill">Git</span>
-          <span class="skill-pill">Gemini API</span>
+          <span class="skill-pill">AWS (Cloud Foundations)</span>
+          <span class="skill-pill">Power BI</span>
+          <span class="skill-pill">Tableau</span>
+          <span class="skill-pill">Excel</span>
         </div>
       </div>
 
