@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Harini B — MSc Data Science</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Newsreader:ital,wght@0,400;0,500;1,400;1,500&family=Inter:wght@300;400;500;600&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ─── DESIGN TOKENS ─────────────────────────────────── */
+    :root {
+      --paper:       #E8E6D8;
+      --paper-white: #F6F4EA;
+      --ink:         #20261F;
+      --ink-soft:    #4B5348;
+      --brass:       #A6752E;
+      --burgundy:    #6E2A35;
+      --line:        #C9C2AC;
+      --stamp-size:  140px;
+    }
+
+    /* ─── RESET ──────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      line-height: 1.65;
+      overflow-x: hidden;
+    }
+
+    /* ─── TYPOGRAPHY ─────────────────────────────────────── */
+    .display      { font-family: 'Instrument Serif', serif; }
+    .newsreader   { font-family: 'Newsreader', serif; }
+    .mono         { font-family: 'Space Mono', monospace; }
+
+    h1 { font-family: 'Instrument Serif', serif; font-size: clamp(2.8rem, 7vw, 5.5rem); font-weight: 400; line-height: 1.05; letter-spacing: -0.01em; }
+    h2 { font-family: 'Instrument Serif', serif; font-size: clamp(1.5rem, 3vw, 2.2rem); font-weight: 400; letter-spacing: -0.01em; }
+    h3 { font-family: 'Newsreader', serif; font-size: 1.05rem; font-weight: 500; letter-spacing: 0.01em; }
+
+    a { color: var(--brass); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ─── NAV ────────────────────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.9rem 2.5rem;
+      background: rgba(232, 230, 216, 0.92);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav-logo { font-family: 'Space Mono', monospace; font-size: 0.75rem; color: var(--ink-soft); letter-spacing: 0.1em; text-transform: uppercase; }
+    .nav-links { display: flex; gap: 1.8rem; }
+    .nav-links a { font-family: 'Space Mono', monospace; font-size: 0.7rem; color: var(--ink-soft); letter-spacing: 0.08em; text-transform: uppercase; }
+    .nav-links a:hover { color: var(--brass); text-decoration: none; }
+
+    /* ─── SECTIONS ───────────────────────────────────────── */
+    section { padding: 5.5rem 0; }
+    .container { max-width: 900px; margin: 0 auto; padding: 0 2rem; }
+
+    /* section label */
+    .section-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      margin-bottom: 0.4rem;
+    }
+    .section-rule {
+      width: 100%;
+      height: 1px;
+      background: var(--line);
+      margin: 1rem 0 2.8rem;
+    }
+
+    /* ─── DECKLE DIVIDER ─────────────────────────────────── */
+    .deckle {
+      width: 100%;
+      height: 24px;
+      background: var(--paper);
+      clip-path: polygon(
+        0% 0%, 2% 100%, 4% 30%, 6% 90%, 8% 20%,
+        10% 85%, 12% 10%, 14% 80%, 16% 25%, 18% 95%,
+        20% 15%, 22% 90%, 24% 5%, 26% 85%, 28% 30%,
+        30% 100%, 32% 20%, 34% 80%, 36% 10%, 38% 90%,
+        40% 0%, 42% 100%, 44% 25%, 46% 85%, 48% 15%,
+        50% 95%, 52% 5%, 54% 90%, 56% 20%, 58% 100%,
+        60% 0%, 62% 85%, 64% 30%, 66% 90%, 68% 10%,
+        70% 80%, 72% 25%, 74% 95%, 76% 5%, 78% 90%,
+        80% 20%, 82% 100%, 84% 15%, 86% 80%, 88% 30%,
+        90% 95%, 92% 10%, 94% 85%, 96% 25%, 98% 100%,
+        100% 0%, 100% 100%, 0% 100%
+      );
+      margin: 0;
+    }
+    .deckle-dark {
+      background: var(--paper-white);
+    }
+
+    /* ─── HERO ───────────────────────────────────────────── */
+    #hero {
+      min-height: 100vh;
+      display: flex; align-items: center;
+      padding-top: 5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-inner { display: grid; grid-template-columns: 1fr auto; gap: 4rem; align-items: center; width: 100%; }
+
+    .hero-meta {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--ink-soft);
+      letter-spacing: 0.08em;
+      margin-bottom: 1.4rem;
+      display: flex; gap: 1.5rem; flex-wrap: wrap;
+    }
+    .hero-meta span::before { content: '·'; margin-right: 0.5rem; color: var(--brass); }
+    .hero-meta span:first-child::before { display: none; }
+
+    .hero-tagline {
+      font-family: 'Newsreader', serif;
+      font-size: clamp(1rem, 2.2vw, 1.25rem);
+      font-style: italic;
+      color: var(--ink-soft);
+      margin: 1rem 0 1.8rem;
+      max-width: 520px;
+      line-height: 1.5;
+    }
+    .hero-positioning {
+      font-family: 'Newsreader', serif;
+      font-size: clamp(1.1rem, 2.5vw, 1.45rem);
+      color: var(--ink);
+      margin: 0.3rem 0 1.8rem;
+      font-weight: 500;
+      font-style: italic;
+      max-width: 540px;
+    }
+
+    .hero-links { display: flex; gap: 1.2rem; flex-wrap: wrap; }
+    .hero-link {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.5rem 1.1rem;
+      border: 1px solid var(--brass);
+      color: var(--brass);
+      transition: background 0.2s, color 0.2s;
+    }
+    .hero-link:hover { background: var(--brass); color: var(--paper); text-decoration: none; }
+    .hero-link.secondary { border-color: var(--line); color: var(--ink-soft); }
+    .hero-link.secondary:hover { background: var(--line); color: var(--ink); }
+
+    /* ─── STAMP ──────────────────────────────────────────── */
+    .stamp-wrap { flex-shrink: 0; position: relative; width: var(--stamp-size); height: var(--stamp-size); }
+    .stamp-svg { width: 100%; height: 100%; transform: rotate(-8deg); opacity: 0.9; }
+
+    /* ─── DRIFT CHART ────────────────────────────────────── */
+    .drift-chart-wrap {
+      margin-top: 3.5rem;
+      border-top: 1px solid var(--line);
+      padding-top: 1.5rem;
+    }
+    .drift-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.6rem;
+      color: var(--ink-soft);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 0.6rem;
+    }
+    #drift-canvas { width: 100%; height: 80px; display: block; }
+
+    /* ─── ABOUT / PAPER SECTION ──────────────────────────── */
+    #about { background: var(--paper-white); }
+    .about-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 3rem; align-items: start; }
+    .about-text p { margin-bottom: 1rem; color: var(--ink-soft); }
+    .about-text p strong { color: var(--ink); }
+    .about-sidebar {}
+    .about-sidebar .field-row { display: flex; flex-direction: column; margin-bottom: 1rem; border-bottom: 1px solid var(--line); padding-bottom: 0.8rem; }
+    .field-key { font-family: 'Space Mono', monospace; font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 0.15rem; }
+    .field-val { font-size: 0.88rem; color: var(--ink); }
+
+    /* ─── RESEARCH PAPERS ────────────────────────────────── */
+    #research { background: var(--paper); }
+    .paper-card {
+      background: var(--paper-white);
+      border: 1px solid var(--line);
+      margin-bottom: 1.6rem;
+      padding: 1.8rem 2rem;
+      clip-path: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 0 100%);
+      position: relative;
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+    .paper-card:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(32,38,31,0.08); }
+    /* folded flap */
+    .paper-card::after {
+      content: '';
+      position: absolute; top: 0; right: 0;
+      width: 22px; height: 22px;
+      background: var(--line);
+      clip-path: polygon(0 0, 100% 100%, 100% 0);
+    }
+    .paper-status {
+      display: inline-block;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.25rem 0.6rem;
+      background: var(--burgundy);
+      color: var(--paper-white);
+      margin-bottom: 0.8rem;
+    }
+    .paper-status.prep { background: var(--brass); }
+    .paper-venue {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.62rem;
+      color: var(--ink-soft);
+      letter-spacing: 0.06em;
+      margin-bottom: 0.5rem;
+    }
+    .paper-title { font-family: 'Instrument Serif', serif; font-size: 1.2rem; margin-bottom: 0.8rem; font-weight: 400; line-height: 1.3; }
+    .paper-problem { font-size: 0.88rem; color: var(--ink-soft); margin-bottom: 0.8rem; }
+    .paper-method { font-size: 0.88rem; color: var(--ink-soft); margin-bottom: 1rem; }
+    .paper-metrics { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .metric-chip {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.04em;
+      padding: 0.2rem 0.6rem;
+      border: 1px solid var(--line);
+      color: var(--ink-soft);
+      background: var(--paper);
+    }
+    .metric-chip.highlight { border-color: var(--brass); color: var(--brass); }
+
+    /* ─── PROJECTS ───────────────────────────────────────── */
+    #projects { background: var(--paper-white); }
+    .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 1.4rem; }
+    .specimen-card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      padding: 1.6rem;
+      clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%);
+      position: relative;
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+    .specimen-card:hover { transform: translateY(-2px); box-shadow: 0 4px 18px rgba(32,38,31,0.08); }
+    .specimen-card::after {
+      content: '';
+      position: absolute; top: 0; right: 0;
+      width: 20px; height: 20px;
+      background: var(--line);
+      clip-path: polygon(0 0, 100% 100%, 100% 0);
+    }
+    .specimen-no {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--brass);
+      margin-bottom: 0.5rem;
+    }
+    .specimen-title { font-family: 'Instrument Serif', serif; font-size: 1.1rem; font-weight: 400; margin-bottom: 0.5rem; line-height: 1.3; }
+    .specimen-date { font-family: 'Space Mono', monospace; font-size: 0.62rem; color: var(--ink-soft); margin-bottom: 0.7rem; }
+    .specimen-desc { font-size: 0.86rem; color: var(--ink-soft); margin-bottom: 1rem; line-height: 1.55; }
+    .specimen-stack { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1rem; }
+    .stack-tag {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.58rem;
+      letter-spacing: 0.04em;
+      padding: 0.15rem 0.5rem;
+      border: 1px solid var(--line);
+      color: var(--ink-soft);
+    }
+    .specimen-link {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--brass);
+    }
+
+    /* ─── EXPERIENCE (FIELD LOG) ─────────────────────────── */
+    #experience { background: var(--paper); }
+    .field-log { position: relative; padding-left: 1.8rem; }
+    .field-log::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 1px; background: var(--line); }
+    .log-entry { position: relative; margin-bottom: 2.8rem; }
+    .log-entry::before {
+      content: '';
+      position: absolute; left: -1.97rem; top: 0.35rem;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--brass);
+      border: 2px solid var(--paper);
+      box-shadow: 0 0 0 1px var(--brass);
+    }
+    .log-date {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      margin-bottom: 0.3rem;
+    }
+    .log-role { font-family: 'Instrument Serif', serif; font-size: 1.15rem; font-weight: 400; margin-bottom: 0.15rem; }
+    .log-org { font-family: 'Newsreader', serif; font-size: 0.92rem; font-style: italic; color: var(--ink-soft); margin-bottom: 0.8rem; }
+    .log-bullets { list-style: none; padding: 0; }
+    .log-bullets li { position: relative; padding-left: 1.1rem; font-size: 0.88rem; color: var(--ink-soft); margin-bottom: 0.45rem; }
+    .log-bullets li::before { content: '—'; position: absolute; left: 0; color: var(--brass); }
+    .log-bullets li strong { color: var(--ink); }
+
+    /* ─── SKILLS ─────────────────────────────────────────── */
+    #skills { background: var(--paper-white); }
+    .skills-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 2rem; }
+    .skill-group-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--brass);
+      margin-bottom: 0.8rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 1px solid var(--line);
+    }
+    .skill-pills { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .skill-pill {
+      font-size: 0.82rem;
+      padding: 0.3rem 0.75rem;
+      border: 1px solid var(--line);
+      color: var(--ink-soft);
+      background: var(--paper);
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .skill-pill:hover { border-color: var(--brass); color: var(--ink); }
+
+    /* ─── ACHIEVEMENTS ───────────────────────────────────── */
+    #achievements { background: var(--paper); }
+    .ach-list { list-style: none; }
+    .ach-list li {
+      display: flex; align-items: baseline; gap: 1rem;
+      padding: 0.9rem 0;
+      border-bottom: 1px solid var(--line);
+      font-size: 0.9rem;
+    }
+    .ach-list li:last-child { border-bottom: none; }
+    .ach-year { font-family: 'Space Mono', monospace; font-size: 0.62rem; color: var(--brass); flex-shrink: 0; }
+    .ach-text { color: var(--ink-soft); }
+    .ach-text strong { color: var(--ink); }
+
+    /* ─── CONTACT / FOOTER ───────────────────────────────── */
+    #contact { background: var(--ink); color: var(--paper); padding: 5.5rem 0 3rem; }
+    #contact .section-label { color: var(--ink-soft); }
+    #contact h2 { color: var(--paper); }
+    .contact-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; margin-top: 2.5rem; }
+    .contact-block p { font-size: 0.88rem; color: #8A8F82; line-height: 1.7; }
+    .contact-emails { margin-top: 1.2rem; display: flex; flex-direction: column; gap: 0.5rem; }
+    .contact-email-row { font-family: 'Space Mono', monospace; font-size: 0.72rem; }
+    .contact-email-label { color: #8A8F82; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; display: block; margin-bottom: 0.1rem; }
+    .contact-email-row a { color: var(--brass); }
+    .contact-links { margin-top: 1.5rem; display: flex; gap: 1rem; flex-wrap: wrap; }
+    .contact-ext-link {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.4rem 0.9rem;
+      border: 1px solid #8A8F82;
+      color: #8A8F82;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .contact-ext-link:hover { border-color: var(--brass); color: var(--brass); text-decoration: none; }
+
+    .footer-sig {
+      margin-top: 4rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid #2E352D;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.6rem;
+      color: #5A5F55;
+      letter-spacing: 0.08em;
+      text-align: center;
+    }
+
+    /* ─── REVEAL ON SCROLL ───────────────────────────────── */
+    .reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.55s ease, transform 0.55s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ─── RESPONSIVE ─────────────────────────────────────── */
+    @media (max-width: 680px) {
+      nav { padding: 0.7rem 1.2rem; }
+      .nav-links { display: none; }
+      .hero-inner { grid-template-columns: 1fr; }
+      .stamp-wrap { display: none; }
+      .about-grid { grid-template-columns: 1fr; }
+      .contact-inner { grid-template-columns: 1fr; }
+      .projects-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ─── NAV ────────────────────────────────────────────── -->
+<nav>
+  <span class="nav-logo">Harini B · Dossier 2026</span>
+  <div class="nav-links">
+    <a href="#about">About</a>
+    <a href="#research">Research</a>
+    <a href="#projects">Projects</a>
+    <a href="#experience">Field Log</a>
+    <a href="#skills">Skills</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<!-- ─── HERO ─────────────────────────────────────────────── -->
+<section id="hero">
+  <div class="container">
+    <div class="hero-inner">
+      <div>
+        <div class="hero-meta">
+          <span>Bengaluru, Karnataka</span>
+          <span>MSc Data Science · Batch 2025–27</span>
+          <span>CGPA 8.5 / 10</span>
+        </div>
+
+        <h1 class="display">Harini B</h1>
+
+        <p class="hero-positioning">I build systems that know what to forget — and prove it.</p>
+
+        <p class="hero-tagline">
+          Machine unlearning researcher with three near-publication papers on
+          adaptive forgetting, concept drift, and federated privacy compliance.
+          Targeting MLE, Research Scientist, and PhD roles.
+        </p>
+
+        <div class="hero-links">
+          <a href="#research" class="hero-link">Research</a>
+          <a href="#projects" class="hero-link">Projects</a>
+          <a href="https://github.com/harinids" target="_blank" class="hero-link secondary">GitHub ↗</a>
+          <a href="https://linkedin.com/in/harini-b-870b712b6" target="_blank" class="hero-link secondary">LinkedIn ↗</a>
+        </div>
+
+        <div class="drift-chart-wrap">
+          <div class="drift-label">Signal · Drift Detected → Unlearned</div>
+          <canvas id="drift-canvas"></canvas>
+        </div>
+      </div>
+
+      <!-- STAMP -->
+      <div class="stamp-wrap">
+        <svg class="stamp-svg" viewBox="0 0 140 140" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="70" cy="70" r="60" fill="none" stroke="#6E2A35" stroke-width="2"/>
+          <circle cx="70" cy="70" r="54" fill="none" stroke="#6E2A35" stroke-width="0.5"/>
+          <path id="stamp-arc" d="M 18,70 A 52,52 0 1 1 122,70" fill="none"/>
+          <text font-family="Space Mono, monospace" font-size="8" letter-spacing="3.5" fill="#6E2A35" text-anchor="middle">
+            <textPath href="#stamp-arc" startOffset="50%">VERIFIED · UNLEARNED · 2026</textPath>
+          </text>
+          <text x="70" y="66" font-family="Space Mono, monospace" font-size="8.5" fill="#6E2A35" text-anchor="middle" letter-spacing="1">MACHINE</text>
+          <text x="70" y="78" font-family="Space Mono, monospace" font-size="8.5" fill="#6E2A35" text-anchor="middle" letter-spacing="1">UNLEARNING</text>
+          <text x="70" y="90" font-family="Space Mono, monospace" font-size="7" fill="#6E2A35" text-anchor="middle" opacity="0.7">LAB</text>
+          <line x1="40" y1="56" x2="100" y2="56" stroke="#6E2A35" stroke-width="0.5" opacity="0.5"/>
+          <line x1="40" y1="94" x2="100" y2="94" stroke="#6E2A35" stroke-width="0.5" opacity="0.5"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="deckle deckle-dark"></div>
+
+<!-- ─── ABOUT ─────────────────────────────────────────────── -->
+<section id="about">
+  <div class="container">
+    <p class="section-label reveal">§ 01 — Specimen Record</p>
+    <h2 class="reveal">About</h2>
+    <div class="section-rule"></div>
+
+    <div class="about-grid reveal">
+      <div class="about-text">
+        <p>
+          I'm an MSc Data Science candidate at CHRIST (Deemed to be University), Bengaluru,
+          with a research focus on <strong>machine unlearning</strong>, <strong>concept drift detection</strong>,
+          and <strong>federated learning</strong>. My work sits at the intersection of responsible AI
+          and systems engineering — designing models that don't just learn well, but can also
+          <em>forget</em> selectively, verifiably, and without full retraining.
+        </p>
+        <p>
+          Before data science, I studied <strong>BSc Chemistry</strong> at Stella Maris College,
+          Chennai — which gave me a precision-driven, experimental mindset I carry into every
+          research pipeline I build. I document experiments like a lab notebook, not a slide deck.
+        </p>
+        <p>
+          Currently working as a <strong>GeoAI Research Intern at Deepspatial</strong>, building
+          agricultural intelligence systems that process satellite imagery at scale. Three research
+          papers under review or in preparation — all first-author, all quantitatively validated.
+        </p>
+        <p>
+          I'm looking for <strong>MLE, Research Scientist, or PhD opportunities</strong> at top-tier
+          product companies and research groups who care about responsible, adaptive AI.
+        </p>
+      </div>
+      <div class="about-sidebar">
+        <div class="field-row">
+          <span class="field-key">Program</span>
+          <span class="field-val">MSc Data Science, CHRIST University</span>
+        </div>
+        <div class="field-row">
+          <span class="field-key">Batch</span>
+          <span class="field-val">2025–27</span>
+        </div>
+        <div class="field-row">
+          <span class="field-key">CGPA</span>
+          <span class="field-val">8.5 / 10.0</span>
+        </div>
+        <div class="field-row">
+          <span class="field-key">Prior Degree</span>
+          <span class="field-val">BSc Chemistry, Stella Maris College, Madras University (2022–25)</span>
+        </div>
+        <div class="field-row">
+          <span class="field-key">Location</span>
+          <span class="field-val">Bengaluru, Karnataka</span>
+        </div>
+        <div class="field-row">
+          <span class="field-key">Research Tags</span>
+          <span class="field-val">Machine Unlearning · Concept Drift · Federated Learning · Responsible AI · LLM · GeoAI</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="deckle"></div>
+
+<!-- ─── RESEARCH PAPERS ────────────────────────────────────── -->
+<section id="research">
+  <div class="container">
+    <p class="section-label reveal">§ 02 — Primary Findings</p>
+    <h2 class="reveal">Research Papers</h2>
+    <div class="section-rule"></div>
+
+    <!-- DAMU -->
+    <div class="paper-card reveal">
+      <div class="paper-status">Under Review</div>
+      <div class="paper-venue">IEEE Transactions on Computational Social Systems · 2026</div>
+      <div class="paper-title">DAMU: Drift-Aware Machine Unlearning for Adaptive Hate Speech Detection Under Temporal Distribution Shift</div>
+      <p class="paper-problem">
+        <strong>Problem:</strong> Hate-speech classifiers degrade as language and platform norms drift over time; full retraining is required to unlearn stale patterns, making continuous compliance prohibitively expensive.
+      </p>
+      <p class="paper-method">
+        <strong>Method:</strong> A four-phase pipeline coupling ADWIN drift signals directly to SISA shard deactivation — automating forget-set construction and removing the need for manual specification. Drift detection → forget-set construction → SISA unlearning → ensemble aggregation.
+      </p>
+      <div class="paper-metrics">
+        <span class="metric-chip highlight">Drift TPR 1.00 / FPR 0.00</span>
+        <span class="metric-chip">Forget-set accuracy −13.4 pp</span>
+        <span class="metric-chip">Retain-set accuracy +6.5 pp</span>
+        <span class="metric-chip">Forget-set loss +0.2207</span>
+        <span class="metric-chip">Retain-set loss −0.0953</span>
+        <span class="metric-chip">38,000-sample dataset (Davidson + OLID)</span>
+      </div>
+    </div>
+
+    <!-- FDAM-UL -->
+    <div class="paper-card reveal">
+      <div class="paper-status prep">In Preparation</div>
+      <div class="paper-venue">Manuscript in preparation · 2026</div>
+      <div class="paper-title">FDAM-UL: Federated Drift-Aware Machine Unlearning</div>
+      <p class="paper-problem">
+        <strong>Problem:</strong> Satisfying GDPR Art. 17 ("right to erasure") in federated settings is difficult without exposing client data — central unlearning approaches break the federated privacy guarantee.
+      </p>
+      <p class="paper-method">
+        <strong>Method:</strong> A fully decentralized federated framework integrating ADWIN + KS-test drift detection with EWC-regularized gradient ascent and influence-function-based unlearning. No raw client data leaves the device.
+      </p>
+      <div class="paper-metrics">
+        <span class="metric-chip highlight">ε-forgetting bound ε ≤ 0.05 (closed-form)</span>
+        <span class="metric-chip">MIA resistance ≤ 0.55</span>
+        <span class="metric-chip">GDPR Art. 17 compliance target</span>
+      </div>
+    </div>
+
+    <!-- Continual Unlearning LLMs -->
+    <div class="paper-card reveal">
+      <div class="paper-status prep">In Preparation</div>
+      <div class="paper-venue">Manuscript in preparation · 2026</div>
+      <div class="paper-title">Continual Unlearning with Memory Consolidation in Large Language Models</div>
+      <p class="paper-problem">
+        <strong>Problem:</strong> LLMs need to selectively forget harmful or private knowledge without catastrophic forgetting of essential capabilities — and without full retraining.
+      </p>
+      <p class="paper-method">
+        <strong>Method:</strong> EWC-based selective unlearning + memory consolidation on GPT-2 with LoRA; evaluated on TOFU and HateXplain benchmarks across retain/forget/eval splits. Built two novel components: <em>Knowledge Auditor</em> and <em>Stability–Plasticity Controller</em>, balancing new learning against knowledge retention.
+      </p>
+      <div class="paper-metrics">
+        <span class="metric-chip">GPT-2 + LoRA</span>
+        <span class="metric-chip">TOFU benchmark</span>
+        <span class="metric-chip">HateXplain benchmark</span>
+        <span class="metric-chip">Knowledge Auditor</span>
+        <span class="metric-chip">Stability–Plasticity Controller</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="deckle deckle-dark"></div>
+
+<!-- ─── PROJECTS ────────────────────────────────────────────── -->
+<section id="projects">
+  <div class="container">
+    <p class="section-label reveal">§ 03 — Specimen Catalogue</p>
+    <h2 class="reveal">Projects</h2>
+    <div class="section-rule"></div>
+
+    <div class="projects-grid">
+
+      <div class="specimen-card reveal">
+        <div class="specimen-no">Specimen No. 01</div>
+        <div class="specimen-title">DAMU — Implementation</div>
+        <div class="specimen-date">Apr – May 2026</div>
+        <p class="specimen-desc">End-to-end prototype of the DAMU unlearning pipeline. Automated drift-triggered SISA shard deactivation on a 38,000-sample hate speech corpus. Achieved 100% drift detection accuracy, zero false positives.</p>
+        <div class="specimen-stack">
+          <span class="stack-tag">Python</span><span class="stack-tag">PyTorch</span><span class="stack-tag">Scikit-learn</span><span class="stack-tag">ADWIN</span><span class="stack-tag">SISA</span>
+        </div>
+        <a href="https://github.com/harinids/DAMU" target="_blank" class="specimen-link">View on GitHub ↗</a>
+      </div>
+
+      <div class="specimen-card reveal">
+        <div class="specimen-no">Specimen No. 02</div>
+        <div class="specimen-title">FDAM-UL</div>
+        <div class="specimen-date">May 2026 – Present</div>
+        <p class="specimen-desc">Federated extension of drift-aware machine unlearning. Decentralized GDPR Art. 17 compliance via EWC-regularized gradient ascent and influence-function unlearning — no raw client data leaves devices.</p>
+        <div class="specimen-stack">
+          <span class="stack-tag">Python</span><span class="stack-tag">PyTorch</span><span class="stack-tag">Federated Learning</span><span class="stack-tag">EWC</span>
+        </div>
+        <a href="https://github.com/harinids/FDAM-UL" target="_blank" class="specimen-link">View on GitHub ↗</a>
+      </div>
+
+      <div class="specimen-card reveal">
+        <div class="specimen-no">Specimen No. 03</div>
+        <div class="specimen-title">Continual Unlearning in LLMs</div>
+        <div class="specimen-date">Jun 2026 – Present</div>
+        <p class="specimen-desc">Selective unlearning + memory consolidation for GPT-2. Two custom components (Knowledge Auditor, Stability–Plasticity Controller) evaluated on TOFU and HateXplain benchmarks across retain/forget/eval splits.</p>
+        <div class="specimen-stack">
+          <span class="stack-tag">PyTorch</span><span class="stack-tag">Hugging Face</span><span class="stack-tag">GPT-2</span><span class="stack-tag">LoRA</span>
+        </div>
+        <a href="https://github.com/harinids/continual-unlearning-llm" target="_blank" class="specimen-link">View on GitHub ↗</a>
+      </div>
+
+      <div class="specimen-card reveal">
+        <div class="specimen-no">Specimen No. 04</div>
+        <div class="specimen-title">AGRI-GSIS</div>
+        <div class="specimen-date">Apr 2026 – Present</div>
+        <p class="specimen-desc">GeoAI agricultural intelligence platform. Processed 78M satellite pixels for NDVI analysis. 99.8% crop classification accuracy; 0.0217 MAE yield prediction. Integrates satellite, weather, and spatial data.</p>
+        <div class="specimen-stack">
+          <span class="stack-tag">XGBoost</span><span class="stack-tag">LSTM</span><span class="stack-tag">DBSCAN</span><span class="stack-tag">GeoAI</span>
+        </div>
+        <a href="https://github.com/harinids" target="_blank" class="specimen-link">View on GitHub ↗</a>
+      </div>
+
+      <div class="specimen-card reveal">
+        <div class="specimen-no">Specimen No. 05</div>
+        <div class="specimen-title">Nurture — Maternal Risk Dashboard</div>
+        <div class="specimen-date">Nov – Dec 2025</div>
+        <p class="specimen-desc">Maternal risk prediction from clinical parameters. Flask REST APIs and dashboards designed for ASHA workers — surfacing high-risk patients with interpretable indicators.</p>
+        <div class="specimen-stack">
+          <span class="stack-tag">Python</span><span class="stack-tag">Flask</span><span class="stack-tag">MySQL</span>
+        </div>
+        <a href="https://github.com/harinids/Nurture----Caring-for-Every-Mother-Every-Day" target="_blank" class="specimen-link">View on GitHub ↗</a>
+      </div>
+
+      <div class="specimen-card reveal">
+        <div class="specimen-no">Specimen No. 06</div>
+        <div class="specimen-title">AI-Assisted Resume Screening (ATS)</div>
+        <div class="specimen-date">2026</div>
+        <p class="specimen-desc">Hybrid ATS combining keyword scoring with LLM contextual feedback via Gemini API. Deployed on Streamlit. Reduces recruiter screening time while surfacing candidates keyword-only systems would miss.</p>
+        <div class="specimen-stack">
+          <span class="stack-tag">Python</span><span class="stack-tag">NLP</span><span class="stack-tag">Streamlit</span><span class="stack-tag">Gemini API</span>
+        </div>
+        <a href="https://github.com/harinids/automated-resume-screening-system" target="_blank" class="specimen-link">View on GitHub ↗</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="deckle"></div>
+
+<!-- ─── EXPERIENCE ─────────────────────────────────────────── -->
+<section id="experience">
+  <div class="container">
+    <p class="section-label reveal">§ 04 — Field Log</p>
+    <h2 class="reveal">Experience</h2>
+    <div class="section-rule"></div>
+
+    <div class="field-log reveal">
+
+      <div class="log-entry">
+        <div class="log-date">Apr 2026 – Present</div>
+        <div class="log-role">GeoAI Research Intern</div>
+        <div class="log-org">Deepspatial · Noida</div>
+        <ul class="log-bullets">
+          <li>Built <strong>AGRI-GSIS</strong>, integrating satellite, weather, and spatial data for agricultural intelligence.</li>
+          <li>Developed ML pipelines (XGBoost, LSTM, DBSCAN) for crop monitoring, yield prediction, and agricultural gap detection.</li>
+          <li>Processed <strong>78 million satellite pixels</strong> for NDVI analysis.</li>
+          <li>Achieved <strong>99.8% crop classification accuracy</strong> and <strong>0.0217 MAE</strong> for yield prediction.</li>
+        </ul>
+      </div>
+
+      <div class="log-entry">
+        <div class="log-date">Apr – May 2026</div>
+        <div class="log-role">Research Intern — Machine Learning &amp; AI Systems</div>
+        <div class="log-org">Techno International New Town · Kolkata</div>
+        <ul class="log-bullets">
+          <li>Developed <strong>DAMU</strong>, integrating ADWIN-based drift detection with SISA unlearning into a single automated pipeline.</li>
+          <li>Built automated pipelines for concept drift detection and ML unlearning using Python and PyTorch.</li>
+          <li>Achieved <strong>100% drift detection accuracy with zero false positives</strong>; verified unlearning across three ML domains.</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="deckle deckle-dark"></div>
+
+<!-- ─── SKILLS ──────────────────────────────────────────────── -->
+<section id="skills">
+  <div class="container">
+    <p class="section-label reveal">§ 05 — Specimen Properties</p>
+    <h2 class="reveal">Skills</h2>
+    <div class="section-rule"></div>
+
+    <div class="skills-grid reveal">
+
+      <div>
+        <div class="skill-group-label">ML / Deep Learning</div>
+        <div class="skill-pills">
+          <span class="skill-pill">PyTorch</span>
+          <span class="skill-pill">Hugging Face</span>
+          <span class="skill-pill">Scikit-learn</span>
+          <span class="skill-pill">XGBoost</span>
+          <span class="skill-pill">Random Forest</span>
+          <span class="skill-pill">NLP</span>
+          <span class="skill-pill">LLM Applications</span>
+          <span class="skill-pill">Deep Learning</span>
+        </div>
+      </div>
+
+      <div>
+        <div class="skill-group-label">Research Methods</div>
+        <div class="skill-pills">
+          <span class="skill-pill">Machine Unlearning</span>
+          <span class="skill-pill">Continual Learning</span>
+          <span class="skill-pill">Concept Drift Detection</span>
+          <span class="skill-pill">Federated Learning</span>
+          <span class="skill-pill">Responsible AI</span>
+          <span class="skill-pill">Experimental Design</span>
+          <span class="skill-pill">GeoAI</span>
+        </div>
+      </div>
+
+      <div>
+        <div class="skill-group-label">Tools &amp; Languages</div>
+        <div class="skill-pills">
+          <span class="skill-pill">Python</span>
+          <span class="skill-pill">SQL</span>
+          <span class="skill-pill">Java</span>
+          <span class="skill-pill">Flask</span>
+          <span class="skill-pill">Streamlit</span>
+          <span class="skill-pill">Pandas</span>
+          <span class="skill-pill">NumPy</span>
+          <span class="skill-pill">Git</span>
+          <span class="skill-pill">Gemini API</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="deckle"></div>
+
+<!-- ─── ACHIEVEMENTS ────────────────────────────────────────── -->
+<section id="achievements">
+  <div class="container">
+    <p class="section-label reveal">§ 06 — Commendations</p>
+    <h2 class="reveal">Achievements &amp; Certifications</h2>
+    <div class="section-rule"></div>
+
+    <ul class="ach-list reveal">
+      <li>
+        <span class="ach-year">Feb 2026</span>
+        <span class="ach-text"><strong>2nd Place — ECOTHON</strong>, Prithvi SDG Summit, CHRIST University, Bengaluru</span>
+      </li>
+      <li>
+        <span class="ach-year">2026</span>
+        <span class="ach-text"><strong>Participant</strong> — UIDAI Data Hackathon 2026</span>
+      </li>
+      <li>
+        <span class="ach-year">2025</span>
+        <span class="ach-text"><strong>AWS Academy Graduate</strong> — Cloud Foundations (AWS Certification)</span>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<div class="deckle deckle-dark" style="background: var(--ink); --paper: var(--ink);"></div>
+
+<!-- ─── CONTACT ──────────────────────────────────────────────── -->
+<section id="contact">
+  <div class="container">
+    <p class="section-label">§ 07 — Correspondence</p>
+    <h2>Get in Touch</h2>
+
+    <div class="contact-inner">
+      <div class="contact-block">
+        <p>
+          Open to MLE, Research Scientist, and PhD opportunities.<br/>
+          Research collaborations and internships welcome.
+        </p>
+        <div class="contact-emails">
+          <div class="contact-email-row">
+            <span class="contact-email-label">Academic</span>
+            <a href="mailto:harini.b@msds.christuniversity.in">harini.b@msds.christuniversity.in</a>
+          </div>
+          <div class="contact-email-row" style="margin-top: 0.6rem;">
+            <span class="contact-email-label">Personal</span>
+            <a href="mailto:harinib.workmail@gmail.com">harinib.workmail@gmail.com</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-block">
+        <p>Find me on the web</p>
+        <div class="contact-links">
+          <a href="https://github.com/harinids" target="_blank" class="contact-ext-link">GitHub ↗</a>
+          <a href="https://linkedin.com/in/harini-b-870b712b6" target="_blank" class="contact-ext-link">LinkedIn ↗</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-sig">
+      Harini B · MSc Data Science · CHRIST (Deemed to be University), Bengaluru · 2026
+    </div>
+  </div>
+</section>
+
+<!-- ─── SCRIPTS ─────────────────────────────────────────────── -->
+<script>
+/* ── DRIFT CHART ─────────────────────────────────────── */
+(function() {
+  const canvas = document.getElementById('drift-canvas');
+  if (!canvas) return;
+  const dpr = window.devicePixelRatio || 1;
+  function resize() {
+    canvas.width  = canvas.offsetWidth * dpr;
+    canvas.height = canvas.offsetHeight * dpr;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  const FRAMES = 180;
+  let frame = 0;
+
+  // Pre-compute the signal: baseline → spike → settle
+  function signal(t) {
+    // t in [0,1]
+    const baseline = 0.18 + Math.sin(t * 14) * 0.04;
+    // drift spike at t ≈ 0.35–0.55
+    const spike = t > 0.3 && t < 0.58
+      ? Math.sin((t - 0.3) / 0.28 * Math.PI) * 0.72
+      : 0;
+    // recovery to new baseline after unlearning
+    const recovery = t > 0.58 ? 0.12 + Math.sin(t * 18) * 0.025 : 0;
+    return baseline + spike + recovery;
+  }
+
+  function draw() {
+    const ctx = canvas.getContext('2d');
+    const w = canvas.width, h = canvas.height;
+    ctx.clearRect(0, 0, w, h);
+
+    const progress = Math.min(frame / FRAMES, 1);
+    const pts = Math.floor(progress * 200);
+    if (pts < 2) { frame++; requestAnimationFrame(draw); return; }
+
+    // Grid lines
+    ctx.strokeStyle = 'rgba(201,194,172,0.4)';
+    ctx.lineWidth = 0.5 * dpr;
+    for (let y = 0.25; y <= 0.75; y += 0.25) {
+      ctx.beginPath(); ctx.moveTo(0, h * y); ctx.lineTo(w, h * y); ctx.stroke();
+    }
+
+    // Threshold line
+    ctx.strokeStyle = 'rgba(110,42,53,0.35)';
+    ctx.setLineDash([3*dpr, 4*dpr]);
+    ctx.beginPath(); ctx.moveTo(0, h * 0.28); ctx.lineTo(w, h * 0.28); ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Drift spike annotation
+    if (progress > 0.35) {
+      ctx.fillStyle = 'rgba(110,42,53,0.6)';
+      ctx.font = `${5.5 * dpr}px "Space Mono", monospace`;
+      ctx.fillText('DRIFT DETECTED', w * 0.33, h * 0.18);
+    }
+    if (progress > 0.62) {
+      ctx.fillStyle = 'rgba(166,117,46,0.7)';
+      ctx.font = `${5.5 * dpr}px "Space Mono", monospace`;
+      ctx.fillText('UNLEARNED', w * 0.64, h * 0.18);
+    }
+
+    // Signal path
+    ctx.strokeStyle = '#A6752E';
+    ctx.lineWidth = 1.5 * dpr;
+    ctx.lineJoin = 'round';
+    ctx.beginPath();
+    for (let i = 0; i < pts; i++) {
+      const t = i / 199;
+      const x = t * w;
+      const y = h - signal(t) * h - h * 0.1;
+      i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+
+    // Glow dot at current pos
+    if (progress < 1) {
+      const t = (pts - 1) / 199;
+      const x = t * w;
+      const y = h - signal(t) * h - h * 0.1;
+      ctx.beginPath();
+      ctx.arc(x, y, 3 * dpr, 0, Math.PI * 2);
+      ctx.fillStyle = '#A6752E';
+      ctx.fill();
+    }
+
+    frame++;
+    if (frame <= FRAMES + 10) requestAnimationFrame(draw);
+  }
+
+  // Start when hero is in view
+  const observer = new IntersectionObserver(entries => {
+    if (entries[0].isIntersecting) { draw(); observer.disconnect(); }
+  }, { threshold: 0.3 });
+  observer.observe(canvas);
+})();
+
+/* ── REVEAL ON SCROLL ────────────────────────────────── */
+(function() {
+  const els = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+    });
+  }, { threshold: 0.12 });
+  els.forEach(el => obs.observe(el));
+})();
+</script>
+
+</body>
+</html>
