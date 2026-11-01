@@ -122,7 +122,7 @@
       color: var(--ink-soft);
       letter-spacing: 0.08em;
       margin-bottom: 1.4rem;
-      display: flex; gap: 1.5rem; flex-wrap: wrap;
+      display: flex; gap: 1rem; flex-wrap: nowrap; white-space: nowrap; overflow: visible;
     }
     .hero-meta span::before { content: '·'; margin-right: 0.5rem; color: var(--brass); }
     .hero-meta span:first-child::before { display: none; }
@@ -439,7 +439,8 @@
       <div>
         <div class="hero-meta">
           <span>Bengaluru, Karnataka</span>
-          <span>MSc Data Science · Batch 2025–27</span>
+          <span>MSc Data Science</span>
+          <span>Batch 2025–27</span>
           <span>Latest Semester GPA 3.79 / 4.00</span>
         </div>
 
